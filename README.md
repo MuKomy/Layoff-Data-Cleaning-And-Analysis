@@ -7,7 +7,8 @@ This SQL project demonstrates how to clean and analyze a real-world dataset on g
 ## 📁 Files Included
 
 - `layoffs.csv` – Raw dataset before cleaning  
-  👉 _[layoffs.csv]_  
+  👉 _[Layoff-Data-Cleaning-And-Analysis
+/layoffs.csv]_  
 - `clean_layoffs.sql` – SQL export of the cleaned dataset  
   👉 _[cleaned_layoffs.csv]_  
 - `Data_Cleaning_Project.sql` – Script to clean the raw data
