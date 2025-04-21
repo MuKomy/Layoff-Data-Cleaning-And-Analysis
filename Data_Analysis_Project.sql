@@ -125,12 +125,3 @@ SELECT *
 FROM company_ranking
 WHERE ranking <=3 AND years IS NOT NULL
 ;
-
-SELECT company, 
-YEAR(`date`) as years,
-SUM(total_laid_off) as laid_off,
-dense_rank() OVER (PARTITION BY YEAR(`date`) ORDER BY SUM(total_laid_off) desc) AS ranking
-FROM layoffs_final
-GROUP BY company,years
-
-#ORDER BY years;

@@ -40,43 +40,15 @@ SELECT * ,
 ROW_NUMBER() OVER(PARTITION BY company, location, industry,total_laid_off, percentage_laid_off,`date`, stage, country, funds_raised_millions) as occurence
 FROM layoffs
 )
-#SELECT *
-#FROM cte_layoffs_with_row_count
-#WHERE occurence > 1;
+SELECT *
+FROM cte_layoffs_with_row_count
+WHERE occurence > 1;
 
-#SELECT * FROM cte_layoffs_with_row_count WHERE company = "oda";
-
-#SELECt * FROM cte_layoffs_with_row_count;
-
-#SELECT COUNT(*) FROM cte_layoffs_with_row_count;
-
-#INSERT INTO layoffs_staging
-#SELECT * FROM cte_layoffs_with_row_count; 
 ;
 SELECT COUNT(*) FROM layoff_with_occurence;
-UPDATE layoffs_staging SET VALUES(SELECT * FROM cte_layoffs_with_row_count )
 
 SELECT * FROM layoffs_staging WHERE company = "oda";
 
-/*
-ALTER TABLE layoffs_staging ADD COLUMN occurence INT;
-
-
-UPDATE layoffs_staging SET occurence = layoff_with_occurence.occurence;
-
-
-ALTER TABLE layoffs_staging
-DROP COLUMN OCCURENCE;
-
-ALTER TABLE layoffs_staging ADD COLUMN occurence INT;
-
-INSERT INTO layoffs_staging  (occurence)
-SELECT occurence FROM layoff_with_occurence;
-
-SELECT * FROM layoffs_staging LIMIT 5000;
-
-ALTER TABLE layoffs_staging DROP COLUMN occurence;
-*/
 
 # Standardizing Data
 
@@ -120,24 +92,7 @@ SET `date` = str_to_date(`date`, '%m/%d/%Y');
 SELECT * FROM layoffs_staging;
 SELECT * FROM layoffs;
 
-CREATE TABLE `layoffs_staging2` (
-  `company` text,
-  `location` text,
-  `industry` text,
-  `total_laid_off` int DEFAULT NULL,
-  `percentage_laid_off` text,
-  `date` date,
-  `stage` text,
-  `country` text,
-  `funds_raised_millions` int DEFAULT NULL,
-  `occurence` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-SELECT * FROM layoffs_staging;
-SELECT * FROM layoffs_staging2;
-
-INSERT INTO layoffs_staging2
-SELECT * FROM layoffs_staging;
+CREATE TABLE layoffs_staging2 AS SELECT * FROM layoffs_staging;
 
 ALTER TABLE layoffs_staging2
 MODIFY COLUMN `date` DATE;
@@ -203,11 +158,10 @@ SELECT * FROM layoffs_staging3;
 
 SELECT t1.industry AS t1_industry,t2.industry AS t2_industry
 FROM layoffs_staging3 t1
-JOIN layoffs_staging3 t2
+INNER JOIN layoffs_staging3 t2
 ON (t1.company = t2.company
 AND t1.location = t2.location)
 WHERE t1.industry ='' OR t1.industry IS NULL;
-
 
 
 SELECT COUNT(*) FROM layoffs_staging3 WHERE industry IS NULL;
@@ -218,7 +172,7 @@ CREATE TABLE layoffs_final AS SELECT * FROM layoffs_staging3;
 
 INSERT INTO layoffs_staging4 SELECT * FROM layoffs_staging3;
 
--- DELETE DATA
+-- DELETE Unnecessary DATA
 SELECT * FROM layoffs_staging3;
 
 SELECT *
