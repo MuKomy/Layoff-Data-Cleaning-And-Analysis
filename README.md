@@ -115,8 +115,6 @@ ORDER BY total DESC;
 
 <b> Tutorial: Alex The Analyst
 
-#Conclusion
-Over this project I have learned to enhance my ability to clean and analyze data using SQL and gained knowledge using MySQL
 
 ## 🧠 Conclusion
 
